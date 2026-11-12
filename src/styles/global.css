@@ -236,3 +236,5 @@ td input, td select { padding: 7px 9px; }
 .totales-box { margin-left: auto; width: 320px; max-width: 100%; }
 .totales-box .fila { display: flex; justify-content: space-between; padding: 5px 0; }
 .totales-box .fila.total { border-top: 2px solid var(--line-strong); margin-top: 6px; padding-top: 9px; font-weight: 700; font-size: 17px; }
+
+.brand-logo { width: 30px; height: 30px; border-radius: 8px; object-fit: cover; }
