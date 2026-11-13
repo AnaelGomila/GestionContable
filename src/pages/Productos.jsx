@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { pdf } from '@react-pdf/renderer'
 import { useAsync } from '../hooks/useAsync.js'
 import * as productosService from '../services/productos.js'
 import * as empresaService from '../services/empresa.js'
-import { errMsg, fechaAR, money } from '../lib/format.js'
+import { errMsg, fechaAR, hoy, money } from '../lib/format.js'
+import CatalogoPDF from '../components/productos/CatalogoPDF.jsx'
 import PageHeader from '../components/ui/PageHeader.jsx'
 import Card from '../components/ui/Card.jsx'
 import Estado from '../components/ui/Estado.jsx'
@@ -16,12 +18,32 @@ const VACIO = { codigo: '', nombre: '', costo: '', precio_neto: '', alicuota_iva
 export default function Productos() {
   const q = useAsync(async () => {
     const [productos, empresa] = await Promise.all([productosService.listar(), empresaService.obtener()])
-    return { productos, apertura: !!empresa?.apertura_registrada }
+    return { productos, empresa, apertura: !!empresa?.apertura_registrada }
   }, [])
   const [form, setForm] = useState(null)
   const [mov, setMov] = useState(null) // { producto, filas }
   const [error, setError] = useState('')
   const [guardando, setGuardando] = useState(false)
+  const [descargando, setDescargando] = useState(false)
+
+  // Catálogo para clientes: productos activos con su precio final (IVA incluido), sin costos
+  const descargarCatalogo = async ({ productos, empresa }) => {
+    setDescargando(true)
+    try {
+      const activos = productos.filter((p) => p.activo !== false)
+      const blob = await pdf(<CatalogoPDF empresa={empresa} productos={activos} fecha={hoy()} />).toBlob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `Catalogo-${hoy()}.pdf`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch (e) {
+      setError('No se pudo generar el catálogo: ' + errMsg(e))
+    } finally {
+      setDescargando(false)
+    }
+  }
 
   const set = (campo) => (e) => setForm({ ...form, [campo]: e.target.value })
 
@@ -62,11 +84,12 @@ export default function Productos() {
 
   return (
     <Estado q={q}>
-      {({ productos, apertura }) => {
+      {({ productos, empresa, apertura }) => {
         const totalValor = productos.reduce((a, p) => a + p.valor, 0)
         return (
           <>
             <PageHeader titulo="Productos" subtitulo="Lo que vendemos. El stock es de solo lectura: cambia únicamente con compras y ventas registradas.">
+              <button className="btn" onClick={() => descargarCatalogo({ productos, empresa })} disabled={descargando || productos.length === 0}>{descargando ? 'Generando…' : 'Descargar catálogo (PDF)'}</button>
               <button className="btn primary" onClick={() => { setError(''); setForm({ ...VACIO }) }}>+ Nuevo producto</button>
             </PageHeader>
 
