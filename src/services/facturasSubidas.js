@@ -5,16 +5,12 @@ import * as archivos from './archivos.js'
 const BUCKET = 'comprobantes'
 
 export async function listar() {
-  const [filas, proveedores] = await Promise.all([
-    q(supabase.from('facturas_subidas').select('*').order('fecha', { ascending: false }).order('id', { ascending: false })),
-    q(supabase.from('proveedores').select('id, razon_social')),
-  ])
-  const nombres = new Map(proveedores.map((p) => [p.id, p.razon_social]))
-  return filas.map((f) => ({ ...f, total: Number(f.total), proveedor: nombres.get(f.proveedor_id) ?? '—' }))
+  const filas = await q(supabase.from('facturas_subidas').select('*').order('fecha', { ascending: false }).order('id', { ascending: false }))
+  return filas.map((f) => ({ ...f, total: Number(f.total) }))
 }
 
 // Sube el archivo y registra los datos de la factura. Si falla el registro, borra el archivo.
-export async function subir({ tipo, pv, nro, fecha, proveedorId, cae, total, archivo }) {
+export async function subir({ tipo, pv, nro, fecha, emisor, cuit, cae, total, archivo }) {
   const error = archivos.validar(archivo)
   if (error) throw new Error(error)
   const limpio = archivo.name.replace(/[^\w.-]+/g, '_')
@@ -24,11 +20,11 @@ export async function subir({ tipo, pv, nro, fecha, proveedorId, cae, total, arc
   const comprobante = `${tipo} ${String(pv).padStart(4, '0')}-${String(nro).padStart(8, '0')}`
   try {
     await q(supabase.from('facturas_subidas').insert({
-      tipo, pv, nro, comprobante, fecha, proveedor_id: proveedorId, cae: cae || null, total, ruta, nombre: archivo.name, mime: archivo.type,
+      tipo, pv, nro, comprobante, fecha, emisor: emisor.trim(), cuit: cuit?.trim() || null, cae: cae || null, total, ruta, nombre: archivo.name, mime: archivo.type,
     }))
   } catch (e) {
     await supabase.storage.from(BUCKET).remove([ruta])
-    if (e?.code === '23505') throw new Error(`Ya subiste la factura ${comprobante} de este proveedor.`)
+    if (e?.code === '23505') throw new Error(`Ya subiste la factura ${comprobante} de este emisor.`)
     throw e
   }
 }

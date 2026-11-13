@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { useAsync } from '../../hooks/useAsync.js'
 import * as comprasService from '../../services/compras.js'
 import * as facturasSubidas from '../../services/facturasSubidas.js'
-import { proveedores as proveedoresService } from '../../services/terceros.js'
 import { errMsg, fechaAR, money } from '../../lib/format.js'
 import Card from '../ui/Card.jsx'
 import Estado from '../ui/Estado.jsx'
@@ -13,13 +12,13 @@ import SubirFacturaModal from './SubirFacturaModal.jsx'
 
 export default function FacturasRecibidas() {
   const q = useAsync(async () => {
-    const [compras, subidas, provs] = await Promise.all([comprasService.listar(), facturasSubidas.listar(), proveedoresService.listar()])
+    const [compras, subidas] = await Promise.all([comprasService.listar(), facturasSubidas.listar()])
     const filas = [
       ...compras.map((c) => ({ clave: `c${c.id}`, subida: false, id: c.id, tipo: c.tipo_comprobante, numero: c.comprobante.replace(/^[A-C] /, ''), fecha: c.fecha, proveedor: c.proveedor, origen: c.origen_comprobante === 'externa' ? 'Externa' : 'Generada', cae: c.cae, total: c.total })),
-      ...subidas.map((s) => ({ clave: `s${s.id}`, subida: true, raw: s, id: s.id, tipo: s.tipo, numero: s.comprobante.replace(/^[A-C] /, ''), fecha: s.fecha, proveedor: s.proveedor, origen: 'Subida', cae: s.cae ?? '', total: s.total })),
+      ...subidas.map((s) => ({ clave: `s${s.id}`, subida: true, raw: s, id: s.id, tipo: s.tipo, numero: s.comprobante.replace(/^[A-C] /, ''), fecha: s.fecha, proveedor: s.emisor, origen: 'Subida', cae: s.cae ?? '', total: s.total })),
     ]
     filas.sort((a, b) => (a.fecha < b.fecha ? 1 : a.fecha > b.fecha ? -1 : 0))
-    return { filas, provs }
+    return { filas }
   }, [])
   const navigate = useNavigate()
   const [subiendo, setSubiendo] = useState(false)
@@ -48,7 +47,7 @@ export default function FacturasRecibidas() {
             <div className="table-wrap">
               <table>
                 <thead>
-                  <tr><th>Tipo</th><th>Número</th><th>Fecha</th><th>Proveedor</th><th>Origen</th><th>CAE</th><th className="num">Total</th><th></th></tr>
+                  <tr><th>Tipo</th><th>Número</th><th>Fecha</th><th>Proveedor / Emisor</th><th>Origen</th><th>CAE</th><th className="num">Total</th><th></th></tr>
                 </thead>
                 <tbody>
                   {filas.length === 0 && <tr><td colSpan="8" className="vacio">Todavía no hay facturas recibidas.</td></tr>}
@@ -81,7 +80,6 @@ export default function FacturasRecibidas() {
       </Card>
       <SubirFacturaModal
         abierto={subiendo}
-        proveedores={q.data?.provs ?? []}
         onClose={() => setSubiendo(false)}
         onHecho={() => { setSubiendo(false); q.reload() }}
       />
