@@ -59,6 +59,7 @@ export default function Compras() {
                       <td>{c.saldo === 0 ? <Badge tipo="ok">Pagada</Badge> : c.pagado > 0 ? <Badge tipo="warn">Pago parcial</Badge> : <Badge tipo="wood">Impaga</Badge>}</td>
                       <td className="right nowrap">
                         <button className="btn sm" onClick={() => abrirDetalle(c)}>Detalle</button>{' '}
+                        <Link to={`/facturas/recibida/${c.id}`} className="btn sm">Factura</Link>{' '}
                         {c.saldo > 0 && <button className="btn sm primary" onClick={() => setPago({ compra: c, fecha: hoy(), monto: c.saldo, medio: 'banco', error: '' })}>Pagar</button>}
                       </td>
                     </tr>

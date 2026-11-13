@@ -11,9 +11,11 @@ import Badge from '../ui/Badge.jsx'
 
 const VACIO = { razon_social: '', documento: '', condicion_iva: 'Responsable Inscripto', domicilio: '', localidad: '', provincia: '', telefono: '', email: '' }
 
+const EXTRA_PROVEEDOR = { ingresos_brutos: '', inicio_actividades: '', punto_venta: 1 }
+
 // Listado + alta/edición para clientes y proveedores.
 // servicio: { listar, crear, actualizar }   esCliente: muestra el tipo de factura que le corresponde
-export default function TercerosCrud({ titulo, subtitulo, singular, servicio, esCliente = false }) {
+export default function TercerosCrud({ titulo, subtitulo, singular, servicio, esCliente = false, esProveedor = false }) {
   const q = useAsync(() => servicio.listar(), [])
   const [form, setForm] = useState(null) // null = cerrado
   const [error, setError] = useState('')
@@ -27,6 +29,7 @@ export default function TercerosCrud({ titulo, subtitulo, singular, servicio, es
     setGuardando(true)
     try {
       const { id, created_at, ...datos } = form
+      if (esProveedor) datos.punto_venta = Number(datos.punto_venta) || 1
       const limpio = Object.fromEntries(Object.entries(datos).map(([k, v]) => [k, typeof v === 'string' && v.trim() === '' ? null : v]))
       if (id) await servicio.actualizar(id, limpio)
       else await servicio.crear(limpio)
@@ -42,7 +45,7 @@ export default function TercerosCrud({ titulo, subtitulo, singular, servicio, es
   return (
     <>
       <PageHeader titulo={titulo} subtitulo={subtitulo}>
-        <button className="btn primary" onClick={() => { setError(''); setForm({ ...VACIO }) }}>+ Nuevo {singular}</button>
+        <button className="btn primary" onClick={() => { setError(''); setForm({ ...VACIO, ...(esProveedor ? EXTRA_PROVEEDOR : {}) }) }}>+ Nuevo {singular}</button>
       </PageHeader>
 
       <Card flush>
@@ -73,7 +76,7 @@ export default function TercerosCrud({ titulo, subtitulo, singular, servicio, es
                       )}
                       <td>{f.localidad ?? '—'}</td>
                       <td>{f.telefono ?? '—'}</td>
-                      <td className="right"><button className="btn sm" onClick={() => { setError(''); setForm({ ...VACIO, ...Object.fromEntries(Object.entries(f).map(([k, v]) => [k, v ?? ''])) }) }}>Editar</button></td>
+                      <td className="right"><button className="btn sm" onClick={() => { setError(''); setForm({ ...VACIO, ...(esProveedor ? EXTRA_PROVEEDOR : {}), ...Object.fromEntries(Object.entries(f).map(([k, v]) => [k, v ?? ''])) }) }}>Editar</button></td>
                     </tr>
                   ))}
                 </tbody>
@@ -109,6 +112,13 @@ export default function TercerosCrud({ titulo, subtitulo, singular, servicio, es
               <Field label="Provincia" col="col-4"><input value={form.provincia} onChange={set('provincia')} /></Field>
               <Field label="Teléfono" col="col-4"><input value={form.telefono} onChange={set('telefono')} /></Field>
               <Field label="Email" col="col-12"><input type="email" value={form.email} onChange={set('email')} /></Field>
+              {esProveedor && (
+                <>
+                  <Field label="Ingresos Brutos" col="col-4"><input value={form.ingresos_brutos} onChange={set('ingresos_brutos')} /></Field>
+                  <Field label="Inicio de actividades" col="col-4"><input type="date" value={form.inicio_actividades} onChange={set('inicio_actividades')} /></Field>
+                  <Field label="Punto de venta" col="col-4" hint="Se usa al proponer el nº de sus facturas."><input type="number" min="1" max="9999" value={form.punto_venta} onChange={set('punto_venta')} /></Field>
+                </>
+              )}
             </div>
             <Alert tipo="error">{error}</Alert>
           </div>

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAsync } from '../hooks/useAsync.js'
 import * as facturasService from '../services/facturas.js'
@@ -6,14 +7,21 @@ import PageHeader from '../components/ui/PageHeader.jsx'
 import Card from '../components/ui/Card.jsx'
 import Estado from '../components/ui/Estado.jsx'
 import Badge from '../components/ui/Badge.jsx'
+import FacturasRecibidas from '../components/facturas/FacturasRecibidas.jsx'
 
 export default function Facturas() {
   const q = useAsync(() => facturasService.listar(), [])
   const navigate = useNavigate()
+  const [solapa, setSolapa] = useState('emitidas')
 
   return (
     <>
-      <PageHeader titulo="Facturas" subtitulo="Se emiten automáticamente al confirmar una venta. La numeración es correlativa por tipo (A y B)." />
+      <PageHeader titulo="Facturas" subtitulo="Emitidas: se generan al confirmar una venta. Recibidas: las facturas A de tus proveedores, cargadas desde Compras." />
+      <div className="tabs" style={{ marginBottom: 14 }}>
+        <button className={solapa === 'emitidas' ? 'activo' : ''} onClick={() => setSolapa('emitidas')}>Emitidas</button>
+        <button className={solapa === 'recibidas' ? 'activo' : ''} onClick={() => setSolapa('recibidas')}>Recibidas</button>
+      </div>
+      {solapa === 'recibidas' ? <FacturasRecibidas /> : (
       <Card flush>
         <Estado q={q}>
           {(facturas) => (
@@ -41,6 +49,7 @@ export default function Facturas() {
           )}
         </Estado>
       </Card>
+      )}
     </>
   )
 }

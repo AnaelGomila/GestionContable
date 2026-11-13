@@ -54,7 +54,7 @@ export default function Productos() {
   const verMovimientos = async (producto) => {
     setMov({ producto, filas: null })
     try {
-      setMov({ producto, filas: await productosService.movimientos(producto.id) })
+      setMov({ producto, filas: await productosService.historial(producto.id) })
     } catch (e) {
       setMov({ producto, filas: [], error: errMsg(e) })
     }
@@ -158,19 +158,36 @@ export default function Productos() {
                 <div className="table-wrap">
                   <Alert tipo="error">{mov.error}</Alert>
                   <table>
-                    <thead><tr><th>Fecha</th><th>Tipo</th><th className="num">Cantidad</th><th className="num">Costo unitario</th></tr></thead>
+                    <thead>
+                      <tr>
+                        <th>Fecha</th><th>Tipo</th><th>Detalle</th>
+                        <th className="num">Cantidad</th><th className="num">Costo unitario</th>
+                        <th className="num">Total neto</th><th className="num">Stock</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      {mov.filas.length === 0 && <tr><td colSpan="4" className="vacio">Sin movimientos todavía.</td></tr>}
+                      {mov.filas.length === 0 && <tr><td colSpan="7" className="vacio">Sin movimientos todavía.</td></tr>}
                       {mov.filas.map((m) => (
                         <tr key={m.id}>
                           <td>{fechaAR(m.fecha)}</td>
                           <td><Badge tipo={m.cantidad > 0 ? 'ok' : 'wood'}>{m.tipo}</Badge></td>
+                          <td>{m.detalle}</td>
                           <td className="num">{m.cantidad > 0 ? `+${m.cantidad}` : m.cantidad}</td>
                           <td className="num">{money(m.costo_unitario)}</td>
+                          <td className="num"><b>{money(m.total)}</b></td>
+                          <td className="num">{m.stock}</td>
                         </tr>
                       ))}
                     </tbody>
+                    {mov.filas.length > 0 && (
+                      <tfoot>
+                        <tr><td colSpan="6">Stock actual</td><td className="num">{mov.filas[0].stock}</td></tr>
+                      </tfoot>
+                    )}
                   </table>
+                  <p className="muted" style={{ marginTop: 10, fontSize: 13 }}>
+                    Total neto = importe de esa línea sin IVA. En las compras y la apertura es cantidad × costo; en las ventas es a precio de venta.
+                  </p>
                 </div>
               ))}
             </Modal>

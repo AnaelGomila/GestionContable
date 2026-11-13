@@ -11,7 +11,7 @@ const MENUS = [
     ],
   },
   {
-    titulo: 'Maestros',
+    titulo: 'Terceros y productos',
     items: [
       { to: '/clientes', texto: 'Clientes' },
       { to: '/proveedores', texto: 'Proveedores' },

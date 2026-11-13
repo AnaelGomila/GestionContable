@@ -2,7 +2,7 @@ import { resumenPatrimonial } from '../../lib/contabilidad.js'
 import { money, r2 } from '../../lib/format.js'
 import Card from '../ui/Card.jsx'
 
-// Muestra que Activo = Pasivo + Patrimonio neto + Resultado, y que el libro coincide con stock, cheques y compras.
+// Muestra que Activo − Pasivo = Patrimonio neto + Ganancias, y que el libro coincide con stock, cheques y compras.
 export default function ControlPatrimonial({ saldos, controles }) {
   const r = resumenPatrimonial(saldos)
   const controlesOk = controles.every((c) => r2(c.libro - c.auxiliar) === 0)
@@ -15,13 +15,16 @@ export default function ControlPatrimonial({ saldos, controles }) {
     }>
       <div className="ecuacion">
         <div className="bloque"><div className="n">{money(r.activo)}</div><div className="t">Activo</div></div>
-        <span className="op">=</span>
+        <span className="op">−</span>
         <div className="bloque"><div className="n">{money(r.pasivo)}</div><div className="t">Pasivo</div></div>
-        <span className="op">+</span>
+        <span className="op">=</span>
         <div className="bloque"><div className="n">{money(r.patrimonio)}</div><div className="t">Patrimonio neto</div></div>
         <span className="op">+</span>
-        <div className="bloque"><div className="n">{money(r.resultado)}</div><div className="t">Resultado</div></div>
+        <div className="bloque"><div className="n">{money(r.resultado)}</div><div className="t">{r.resultado < 0 ? 'Pérdidas' : 'Ganancias'}</div></div>
       </div>
+      <p className="muted center" style={{ marginBottom: 14 }}>
+        Activo − Pasivo = {money(r.activo - r.pasivo)} &nbsp;·&nbsp; Patrimonio neto + {r.resultado < 0 ? 'pérdidas' : 'ganancias'} = {money(r.pasivoMasPn - r.pasivo)}
+      </p>
       <div className="table-wrap">
         <table>
           <thead>

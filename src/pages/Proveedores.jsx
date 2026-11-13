@@ -8,6 +8,7 @@ export default function Proveedores() {
       subtitulo="A quién le compramos la mercadería. Cada compra queda en la cuenta Proveedores hasta que se paga."
       singular="proveedor"
       servicio={proveedores}
+      esProveedor
     />
   )
 }

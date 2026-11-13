@@ -13,6 +13,7 @@ import CompraNueva from './pages/CompraNueva.jsx'
 import Ventas from './pages/Ventas.jsx'
 import VentaNueva from './pages/VentaNueva.jsx'
 import Facturas from './pages/Facturas.jsx'
+import FacturaRecibida from './pages/FacturaRecibida.jsx'
 import FacturaVista from './pages/FacturaVista.jsx'
 import Cheques from './pages/Cheques.jsx'
 import LibroDiario from './pages/LibroDiario.jsx'
@@ -30,7 +31,7 @@ export default function App() {
         <h1>Falta configurar Supabase</h1>
         <br />
         <Alert tipo="warn">
-          Copiá <b>.env.example</b> a <b>.env</b>, completá <b>VITE_SUPABASE_URL</b> y <b>VITE_SUPABASE_ANON_KEY</b> y reiniciá <code>npm run dev</code>.
+          Copiá <b>.env.example</b> a <b>.env</b>, completá <b>VITE_SUPABASE_URL</b> y <b>VITE_SUPABASE_PUBLISHABLE_KEY</b> y reiniciá <code>npm run dev</code>.
         </Alert>
       </div>
     )
@@ -51,6 +52,7 @@ export default function App() {
         <Route path="ventas" element={<Ventas />} />
         <Route path="ventas/nueva" element={<VentaNueva />} />
         <Route path="facturas" element={<Facturas />} />
+        <Route path="facturas/recibida/:id" element={<FacturaRecibida />} />
         <Route path="facturas/:id" element={<FacturaVista />} />
         <Route path="cheques" element={<Cheques />} />
         <Route path="libro-diario" element={<LibroDiario />} />
