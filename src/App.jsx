@@ -16,6 +16,7 @@ import Facturas from './pages/Facturas.jsx'
 import FacturaRecibida from './pages/FacturaRecibida.jsx'
 import FacturaVista from './pages/FacturaVista.jsx'
 import Cheques from './pages/Cheques.jsx'
+import ChequesEmitidos from './pages/ChequesEmitidos.jsx'
 import LibroDiario from './pages/LibroDiario.jsx'
 import LibroMayor from './pages/LibroMayor.jsx'
 import BalanceSumas from './pages/BalanceSumas.jsx'
@@ -55,6 +56,7 @@ export default function App() {
         <Route path="facturas/recibida/:id" element={<FacturaRecibida />} />
         <Route path="facturas/:id" element={<FacturaVista />} />
         <Route path="cheques" element={<Cheques />} />
+        <Route path="valores-a-pagar" element={<ChequesEmitidos />} />
         <Route path="libro-diario" element={<LibroDiario />} />
         <Route path="libro-mayor" element={<LibroMayor />} />
         <Route path="balance" element={<BalanceSumas />} />
