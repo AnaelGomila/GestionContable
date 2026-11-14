@@ -237,4 +237,8 @@ td input, td select { padding: 7px 9px; }
 .totales-box .fila { display: flex; justify-content: space-between; padding: 5px 0; }
 .totales-box .fila.total { border-top: 2px solid var(--line-strong); margin-top: 6px; padding-top: 9px; font-weight: 700; font-size: 17px; }
 
+/* Efecto de cada línea del asiento (A+, P−, RN+, …) */
+.efecto { display: inline-block; min-width: 38px; text-align: center; padding: 1px 6px; border-radius: 6px; background: var(--primary-soft); color: var(--primary-d); font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; font-weight: 600; }
+.leyenda-efecto { font-size: 12px; padding: 8px 14px; border-top: 1px solid var(--line); }
+
 .brand-logo { width: 30px; height: 30px; border-radius: 8px; object-fit: cover; }

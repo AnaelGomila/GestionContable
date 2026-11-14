@@ -9,6 +9,7 @@ import Modal from '../components/ui/Modal.jsx'
 import Field from '../components/ui/Field.jsx'
 import Alert from '../components/ui/Alert.jsx'
 import Badge from '../components/ui/Badge.jsx'
+import { Efecto, LeyendaEfecto } from '../components/asientos/Efecto.jsx'
 import AsientoPreview from '../components/asientos/AsientoPreview.jsx'
 
 const ANULABLES = ['manual', 'fondos']
@@ -98,9 +99,9 @@ function Listado({ asientos, filtros, setFiltros, onAnular }) {
       <Card flush>
         <div className="table-wrap">
           <table>
-            <thead><tr><th style={{ width: 70 }}>Nº</th><th style={{ width: 100 }}>Fecha</th><th>Cuenta / descripción</th><th className="num" style={{ width: 150 }}>Debe</th><th className="num" style={{ width: 150 }}>Haber</th></tr></thead>
+            <thead><tr><th style={{ width: 70 }}>Nº</th><th style={{ width: 100 }}>Fecha</th><th>Cuenta / descripción</th><th style={{ width: 64 }}>Efecto</th><th className="num" style={{ width: 150 }}>Debe</th><th className="num" style={{ width: 150 }}>Haber</th></tr></thead>
             <tbody>
-              {filas.length === 0 && <tr><td colSpan="5" className="vacio">No hay asientos para mostrar.</td></tr>}
+              {filas.length === 0 && <tr><td colSpan="6" className="vacio">No hay asientos para mostrar.</td></tr>}
               {filas.map((a) => {
                 const anulado = anulados.has(a.id)
                 return (
@@ -108,7 +109,7 @@ function Listado({ asientos, filtros, setFiltros, onAnular }) {
                     <tr className="sub">
                       <td><b>{a.numero}</b></td>
                       <td>{fechaAR(a.fecha)}</td>
-                      <td colSpan="3">
+                      <td colSpan="4">
                         <span className="row" style={{ gap: 8 }}>
                           <b>{a.descripcion}</b>
                           <Badge tipo="olive">{ORIGENES[a.origen] ?? a.origen}</Badge>
@@ -122,6 +123,7 @@ function Listado({ asientos, filtros, setFiltros, onAnular }) {
                       <tr key={l.id}>
                         <td></td><td></td>
                         <td style={{ paddingLeft: l.haber > 0 ? 44 : 14 }}><span className="muted mono">{l.codigo}</span> {l.nombre}</td>
+                        <td><Efecto codigo={l.codigo} debe={l.debe} haber={l.haber} /></td>
                         <td className="num">{l.debe > 0 ? money(l.debe) : ''}</td>
                         <td className="num">{l.haber > 0 ? money(l.haber) : ''}</td>
                       </tr>
@@ -132,6 +134,7 @@ function Listado({ asientos, filtros, setFiltros, onAnular }) {
             </tbody>
           </table>
         </div>
+        <LeyendaEfecto />
       </Card>
     </div>
   )

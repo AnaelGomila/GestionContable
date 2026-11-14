@@ -79,7 +79,7 @@ export default function Navbar() {
   return (
     <nav className="navbar" ref={ref}>
       <Link to="/" className="brand">
-        <span className="brand-mark">EO</span>
+        <img src="/logo.png" alt="Ergo Oficinas" className="brand-logo" />
         Ergo Oficinas
       </Link>
       <NavLink to="/" end className={({ isActive }) => `nav-link ${isActive ? 'activo' : ''}`}>
