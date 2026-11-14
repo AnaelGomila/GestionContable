@@ -33,7 +33,7 @@ export default function Cheques() {
 
   return (
     <>
-      <PageHeader titulo="Cheques diferidos" subtitulo="Cheques recibidos en ventas. Al cobrarlos pasan de 'Cheques diferidos a cobrar' al Banco.">
+      <PageHeader titulo="Valores diferidos a depositar" subtitulo="Cheques de pago diferido recibidos en ventas. Al cobrarlos pasan de 'Valores diferidos a depositar' al Banco.">
         <div className="tabs">
           {[['pendiente', 'Pendientes'], ['cobrado', 'Cobrados'], ['todos', 'Todos']].map(([v, t]) => (
             <button key={v} className={filtro === v ? 'activo' : ''} onClick={() => setFiltro(v)}>{t}</button>
@@ -79,7 +79,7 @@ export default function Cheques() {
 
       <Modal
         abierto={!!cobro}
-        titulo="Cobrar cheque diferido"
+        titulo="Cobrar valor diferido"
         onClose={() => setCobro(null)}
         pie={<><button className="btn" onClick={() => setCobro(null)}>Cancelar</button><button className="btn primary" onClick={confirmar} disabled={enviando}>Registrar cobro</button></>}
       >

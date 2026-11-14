@@ -38,6 +38,7 @@ export const ORIGENES = {
   fondos: 'Fondos',
   cobro_cheque: 'Cobro de cheque',
   pago_proveedor: 'Pago a proveedor',
+  pago_cheque_propio: 'Pago de cheque propio',
   manual: 'Manual',
   anulacion: 'Anulación',
 }

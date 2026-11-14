@@ -31,5 +31,7 @@ export const asientoPagoProveedor = ({ medio, monto }) =>
 
 export const asientoCobroCheque = (monto) => conImporte([L('1.1.02', monto), L('1.1.03', 0, monto)])
 
+export const asientoPagoChequePropio = (monto) => conImporte([L('2.1.08', monto), L('1.1.02', 0, monto)])
+
 export const asientoManual = (lineas) =>
   conImporte(lineas.filter((l) => l.cuenta).map((l) => L(l.cuenta, l.debe, l.haber)))

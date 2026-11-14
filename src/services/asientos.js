@@ -35,8 +35,9 @@ export const fondos = ({ fecha, origen, destino, monto, descripcion }) =>
   q(supabase.rpc('registrar_fondos', { p_fecha: fecha, p_origen: origen, p_destino: destino, p_monto: monto, p_descripcion: descripcion || null }))
 
 // lineas: [{ cuenta: '5.2.02', debe: 100, haber: 0 }]
-export const manual = ({ fecha, descripcion, lineas }) =>
-  q(supabase.rpc('registrar_asiento_manual', { p_fecha: fecha, p_descripcion: descripcion, p_lineas: lineas }))
+// cheques (propios): [{ numero, banco, monto, vencimiento, beneficiario }]  → cada uno suma su línea al haber de 2.1.08
+export const manual = ({ fecha, descripcion, lineas, cheques = [] }) =>
+  q(supabase.rpc('registrar_asiento_manual', { p_fecha: fecha, p_descripcion: descripcion, p_lineas: lineas, p_cheques: cheques }))
 
 export const anular = ({ id, fecha, motivo }) =>
   q(supabase.rpc('anular_asiento', { p_asiento_id: id, p_fecha: fecha, p_motivo: motivo || null }))

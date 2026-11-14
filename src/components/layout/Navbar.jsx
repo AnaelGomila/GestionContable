@@ -24,7 +24,8 @@ const MENUS = [
       { to: '/compras', texto: 'Compras' },
       { to: '/ventas', texto: 'Ventas' },
       { to: '/facturas', texto: 'Facturas' },
-      { to: '/cheques', texto: 'Cheques diferidos' },
+      { to: '/cheques', texto: 'Valores diferidos a depositar' },
+      { to: '/valores-a-pagar', texto: 'Valores diferidos a pagar' },
     ],
   },
   {
@@ -77,10 +78,10 @@ export default function Navbar() {
 
   return (
     <nav className="navbar" ref={ref}>
-     <Link to="/" className="brand">
-  <img src="/logo.png" alt="Ergo Oficinas" className="brand-logo" />
-  Ergo Oficinas
-</Link>
+      <Link to="/" className="brand">
+        <span className="brand-mark">EO</span>
+        Ergo Oficinas
+      </Link>
       <NavLink to="/" end className={({ isActive }) => `nav-link ${isActive ? 'activo' : ''}`}>
         Inicio
       </NavLink>
