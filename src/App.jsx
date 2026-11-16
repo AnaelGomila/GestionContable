@@ -20,6 +20,8 @@ import ChequesEmitidos from './pages/ChequesEmitidos.jsx'
 import LibroDiario from './pages/LibroDiario.jsx'
 import LibroMayor from './pages/LibroMayor.jsx'
 import BalanceSumas from './pages/BalanceSumas.jsx'
+import PlanillaTrabajo from './pages/PlanillaTrabajo.jsx'
+import CierreEjercicio from './pages/CierreEjercicio.jsx'
 import SituacionPatrimonial from './pages/SituacionPatrimonial.jsx'
 import PlanCuentas from './pages/PlanCuentas.jsx'
 import AsientoManual from './pages/AsientoManual.jsx'
@@ -60,6 +62,8 @@ export default function App() {
         <Route path="libro-diario" element={<LibroDiario />} />
         <Route path="libro-mayor" element={<LibroMayor />} />
         <Route path="balance" element={<BalanceSumas />} />
+        <Route path="planilla" element={<PlanillaTrabajo />} />
+        <Route path="cierre" element={<CierreEjercicio />} />
         <Route path="situacion-patrimonial" element={<SituacionPatrimonial />} />
         <Route path="plan-de-cuentas" element={<PlanCuentas />} />
         <Route path="asiento-manual" element={<AsientoManual />} />

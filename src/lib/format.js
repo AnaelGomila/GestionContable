@@ -41,6 +41,8 @@ export const ORIGENES = {
   pago_cheque_propio: 'Pago de cheque propio',
   manual: 'Manual',
   anulacion: 'Anulación',
+  cierre: 'Cierre de ejercicio',
+  reapertura: 'Apertura de ejercicio',
 }
 
 export const CONDICIONES_IVA = ['Responsable Inscripto', 'Monotributo', 'Exento', 'Consumidor Final']

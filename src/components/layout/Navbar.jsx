@@ -34,9 +34,11 @@ const MENUS = [
       { to: '/libro-diario', texto: 'Libro diario' },
       { to: '/libro-mayor', texto: 'Libro mayor' },
       { to: '/balance', texto: 'Balance de sumas y saldos' },
+      { to: '/planilla', texto: 'Planilla de trabajo' },
       { to: '/situacion-patrimonial', texto: 'Situación patrimonial' },
       { to: '/plan-de-cuentas', texto: 'Plan de cuentas' },
       { to: '/asiento-manual', texto: 'Asiento manual' },
+      { to: '/cierre', texto: 'Cierre de ejercicio' },
     ],
   },
 ]

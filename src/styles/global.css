@@ -141,7 +141,8 @@ tr.anulado td.keep { text-decoration: none; }
 .form-grid { display: grid; gap: 14px 16px; grid-template-columns: repeat(12, 1fr); }
 .col-12 { grid-column: span 12; } .col-8 { grid-column: span 8; } .col-6 { grid-column: span 6; }
 .col-4 { grid-column: span 4; } .col-3 { grid-column: span 3; } .col-2 { grid-column: span 2; }
-@media (max-width: 760px) { .col-8, .col-6, .col-4, .col-3, .col-2 { grid-column: span 12; } }
+.col-9 { grid-column: span 9; } .col-7 { grid-column: span 7; } .col-5 { grid-column: span 5; }
+@media (max-width: 760px) { .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2 { grid-column: span 12; } }
 .field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
 .field > label, .label { font-size: 12.5px; font-weight: 500; color: var(--muted); }
 .field .hint { font-size: 12px; color: var(--muted); }
@@ -242,3 +243,20 @@ td input, td select { padding: 7px 9px; }
 .leyenda-efecto { font-size: 12px; padding: 8px 14px; border-top: 1px solid var(--line); }
 
 .brand-logo { width: 30px; height: 30px; border-radius: 8px; object-fit: cover; }
+
+/* ---------- Planilla de trabajo ---------- */
+/* Entra en el ancho de la pantalla (sin scroll horizontal); si hay muchas cuentas, el scroll es vertical. */
+.planilla-wrap { max-height: calc(100vh - 230px); min-height: 280px; overflow: auto; }
+.planilla { table-layout: fixed; min-width: 880px; font-size: 12px; }
+.planilla th, .planilla td { padding: 6px 7px; }
+.planilla thead th { position: sticky; z-index: 2; text-align: center; letter-spacing: 0.03em; }
+.planilla thead tr.g1 th { top: 0; height: 30px; }
+.planilla thead tr.g2 th { top: 30px; text-transform: none; font-size: 11.5px; }
+.planilla thead th.izq { text-align: left; }
+.planilla thead th.num { text-align: right; }
+.planilla td.cuenta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.planilla .sep { border-left: 1px solid var(--line-strong); }
+.planilla tfoot td { position: sticky; bottom: 0; z-index: 2; }
+.planilla tr.resultado td { border-top: 1px solid var(--line-strong); }
+
+.sep-arriba { margin-top: 12px; }
