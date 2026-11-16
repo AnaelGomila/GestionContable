@@ -50,7 +50,7 @@ export default function Dashboard() {
                 <StatCard label="Stock valorizado" valor={money(stockValor)} nota="Cantidad × costo" />
                 <StatCard label="Ventas (neto)" valor={money(saldoDe(saldos, '4.1.01'))} />
                 <StatCard label="Costo de lo vendido" valor={money(saldoDe(saldos, '5.1.01'))} />
-                <StatCard label="Resultado" valor={money(r.resultado)} nota="Ingresos − egresos" />
+                <StatCard label="Resultado" valor={money(r.resultado)} nota="Ingresos − egresos" tono={r.resultado >= 0 ? 'ok' : 'bad'} />
                 <StatCard label="Patrimonio neto" valor={money(r.patrimonio + r.resultado)} nota="Capital + resultado" />
               </div>
 

@@ -13,15 +13,19 @@ export default function Facturas() {
   const q = useAsync(() => facturasService.listar(), [])
   const navigate = useNavigate()
   const [solapa, setSolapa] = useState('emitidas')
+  const [subiendo, setSubiendo] = useState(false)
 
   return (
     <>
       <PageHeader titulo="Facturas" subtitulo="Emitidas: se generan al confirmar una venta. Recibidas: las facturas A de tus proveedores, cargadas desde Compras." />
-      <div className="tabs" style={{ marginBottom: 14 }}>
-        <button className={solapa === 'emitidas' ? 'activo' : ''} onClick={() => setSolapa('emitidas')}>Emitidas</button>
-        <button className={solapa === 'recibidas' ? 'activo' : ''} onClick={() => setSolapa('recibidas')}>Recibidas</button>
+      <div className="row" style={{ marginBottom: 14 }}>
+        <div className="tabs">
+          <button className={solapa === 'emitidas' ? 'activo' : ''} onClick={() => setSolapa('emitidas')}>Emitidas</button>
+          <button className={solapa === 'recibidas' ? 'activo' : ''} onClick={() => setSolapa('recibidas')}>Recibidas</button>
+        </div>
+        {solapa === 'recibidas' && <button className="btn primary" onClick={() => setSubiendo(true)}>+ Subir factura recibida</button>}
       </div>
-      {solapa === 'recibidas' ? <FacturasRecibidas /> : (
+      {solapa === 'recibidas' ? <FacturasRecibidas subiendo={subiendo} setSubiendo={setSubiendo} /> : (
       <Card flush>
         <Estado q={q}>
           {(facturas) => (

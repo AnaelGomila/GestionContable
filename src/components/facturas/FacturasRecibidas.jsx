@@ -10,7 +10,7 @@ import Badge from '../ui/Badge.jsx'
 import Alert from '../ui/Alert.jsx'
 import SubirFacturaModal from './SubirFacturaModal.jsx'
 
-export default function FacturasRecibidas() {
+export default function FacturasRecibidas({ subiendo, setSubiendo }) {
   const q = useAsync(async () => {
     const [compras, subidas] = await Promise.all([comprasService.listar(), facturasSubidas.listar()])
     const filas = [
@@ -21,7 +21,6 @@ export default function FacturasRecibidas() {
     return { filas }
   }, [])
   const navigate = useNavigate()
-  const [subiendo, setSubiendo] = useState(false)
   const [error, setError] = useState('')
 
   const abrir = async (f) => {
@@ -36,10 +35,6 @@ export default function FacturasRecibidas() {
 
   return (
     <div className="stack">
-      <div className="row">
-        <div className="spacer" />
-        <button className="btn primary" onClick={() => setSubiendo(true)}>+ Subir factura recibida</button>
-      </div>
       <Alert tipo="error">{error}</Alert>
       <Card flush>
         <Estado q={q}>
